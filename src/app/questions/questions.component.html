@@ -1,0 +1,21 @@
+<div class="question-container" [formGroup]="questionGroup">
+  <h1 for="questionName">{{question.name}}</h1>
+
+  <div class="alternative-container" formArrayName="alternatives">
+    <div *ngFor="let alternative of alternatives.controls; let i = index" [formGroupName]="i">
+
+      <mat-checkbox [checked]="isAlternativeSelected(alternative.get('id')?.value)"
+        (change)="onCheckboxChange($event, $any(alternative))">
+        {{alternative.get('name')?.value}}
+      </mat-checkbox>
+
+      <div *ngIf="isAlternativeSelected(alternative.get('id')?.value) && alternative.get('subQuestion')"
+        class="sub-question-container">
+        <div *ngFor="let subQuestion of $any(alternative.get('subQuestion')).controls; let j = index">
+          <app-questions [questionGroup]="subQuestion"></app-questions>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
